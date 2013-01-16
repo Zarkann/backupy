@@ -1,0 +1,4 @@
+# Ignore the following files with this file-ending.
+*.pyc # Compiled python code
+
+# Ignore the following folders
