@@ -1,4 +1,4 @@
-backup.py
+backupy
 =======
 
 This is my backup script I am currently writing in Python for a
