@@ -24,22 +24,7 @@ import shutil
 import sys
 
 # ~Functions~
-# My functions for making the script work.
-def install_script():
-    if os.name == "nt":
-        print("Installation of the script now begins.")
-    elif os.name == "posix":
-        print("Installation of the script now begins.")
-        print("Copying backup.py to '/usr/local/bin'...")
-        shutil.copy2("./backup.py", "/usr/local/bin")
-        print("DONE!")
-        print("Please note that you will have to create an alias as well as")
-        print("setting executable permission on the script to make any user")
-        print("use the script.")
-    else:
-        print("Your operating system is not supported in this version.")
-        print("Either write your own install script or deal with it.")
-
+# The functions making up the script
 def main(argv):
     # Creates the empty variables needed in the script
     root_dir = ''
@@ -69,7 +54,6 @@ def main(argv):
             dst_dir = arg
         elif opt in ("-i"):
             print("This will install the script to your OS.")
-            install_script()
         elif opt in ("-e"):
             print("This is an easteregg.")
             print("It's not particularly yummy.")
@@ -90,24 +74,29 @@ def main(argv):
                 os.makedirs(dst_dir)
             # If the dst_dir exists. Do this.
             elif os.path.exists(dst_dir):
-                # For-loop to fill the variable sub_dir with destination
-                # sub-folders for the regex to search.
-                for baup_dir, baup_sub_dirs, baup_files in os.walk(dst_dir):
-                    sub_dir = []
-                    sub_dir.append(baup_sub_dirs)
-                # Turns the sub_dir list into a string for the regex to search.
-                # It also removes the "," and replaces them for spaces.
-                str(sub_dir)[2:-2].replace("','"," ")
-                # Compiles the regex fol_regex. It will search for anything
-                # named "backup" followed by the number/numbers 0 and above.
-                fol_regex = re.compile("[\t^]backup[0-9]+[\t$]")
-                sub_dir_high = fol_regex.search(sub_dir)
-                print("-----")
                 # Self-explanatory. Prints the chosen source and destination
                 # directories.
                 print("Given source directory tree", root_dir)
                 print("Given destination directory tree", dst_dir)
-                print(sub_dir[:])
+                # For-loop to fill the variable sub_dir with destination
+                # sub-folders for the regex to search.
+                sub_dir = []
+                for baup_root, baup_dir, baup_files in os.walk(dst_dir):
+                    if baup_dir == []:
+                        continue
+                    else:
+                        sub_dir.append(baup_dir)
+                # Removes the sub directories from the list sub_dir leaving only
+                # the folders named backup<number>
+                for entry in sub_dir[1:]:
+                    sub_dir.pop()
+                # Turns the sub_dir list into a string for the regex to search.
+                # It also removes the "," and replaces them for spaces.
+                #str(sub_dir)[2:-2].replace("','"," ")
+                # Compiles the regex fol_regex. It will search for anything
+                # named "backup" followed by the number/numbers 0 and above.
+                #fol_regex = re.compile("[\t^]backup[0-9]+[\t$]")
+                #sub_dir_high = fol_regex.search(sub_dir)
     sys.exit()
     
 # Runs the functionp

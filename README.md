@@ -23,3 +23,10 @@ copy all items and sub-directories from the source root into a folder
 named backup<numbeer> under the destination root. If several backups
 are directed to the same destination root the number in backup<number>
 will increment on the new directory.
+
+License
+========
+
+This program is licensed under the GPLv3.
+For more information check the supplied .txt file or go to
+http://www.gnu.org/licenses/
