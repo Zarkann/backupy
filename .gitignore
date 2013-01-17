@@ -1,6 +1,3 @@
 # Ignore the following files with this file-ending.
 *.pyc # Compiled python code.
-*.kpf # Ignores the komodo project file.
 *.komodoproject # Ignores the komodo project file.
-
-# Ignore the following folders

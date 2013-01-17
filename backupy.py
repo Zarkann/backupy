@@ -17,6 +17,7 @@
 
 # ~Modules~
 # Imports the modules the script will use.
+import datetime
 import getopt
 import os
 import re
@@ -60,43 +61,48 @@ def main(argv):
 
     # Makes sure the script is not without values on src_dir and dst_dir
     if root_dir != '' or dst_dir != '':
-        # For-loop walking through root_dir to find directories, files and
-        # the source directory.
-        for src_dir, dirs, files in os.walk(root_dir):
-            # If the source path does not exist. End the script.
-            if not os.path.exists(root_dir):
-                print("Source path does not exist. Try again.")
-                sys.exit(2)
-            # Creates the destination tree if it does not exist.
-            elif not os.path.exists(dst_dir):
-                print("Destination path does not exist.")
-                print("Creating destination directories")
-                os.makedirs(dst_dir)
-            # If the dst_dir exists. Do this.
-            elif os.path.exists(dst_dir):
-                # Self-explanatory. Prints the chosen source and destination
-                # directories.
-                print("Given source directory tree", root_dir)
-                print("Given destination directory tree", dst_dir)
-                # For-loop to fill the variable sub_dir with destination
-                # sub-folders for the regex to search.
-                sub_dir = []
-                for baup_root, baup_dir, baup_files in os.walk(dst_dir):
-                    if baup_dir == []:
-                        continue
-                    else:
-                        sub_dir.append(baup_dir)
-                # Removes the sub directories from the list sub_dir leaving only
-                # the folders named backup<number>
-                for entry in sub_dir[1:]:
-                    sub_dir.pop()
-                # Turns the sub_dir list into a string for the regex to search.
-                # It also removes the "," and replaces them for spaces.
-                #str(sub_dir)[2:-2].replace("','"," ")
-                # Compiles the regex fol_regex. It will search for anything
-                # named "backup" followed by the number/numbers 0 and above.
-                #fol_regex = re.compile("[\t^]backup[0-9]+[\t$]")
-                #sub_dir_high = fol_regex.search(sub_dir)
+        # If the source path does not exist. End the script.
+        if not os.path.exists(root_dir):
+            print("Source path does not exist. Try again.")
+            sys.exit(2)
+
+        # Creates the destination tree if it does not exist.
+        elif not os.path.exists(dst_dir):
+            print("Destination path does not exist.")
+            print("Creating destination directories")
+            os.makedirs(dst_dir)
+
+        # If the dst_dir exists. Do this.
+        elif os.path.exists(dst_dir):
+            # Self-explanatory. Prints the chosen source and destination
+            # directories.
+            print("Given source directory tree", root_dir)
+            print("Given destination directory tree", dst_dir)
+
+            # For-loop to fill the variable sub_dir with destination
+            # sub-folders for the regex to search.
+            #sub_dir = []
+            #for baup_root, baup_dir, baup_files in os.walk(dst_dir):
+            #    if baup_dir == []:
+            #        continue
+            #    else:
+            #        sub_dir.append(baup_dir)
+
+            # Removes the sub directories from the list sub_dir leaving only
+            # the folders named backup-<number>
+            #for entry in sub_dir[1:]:
+            #    sub_dir.pop()
+            #sub_dir = sub_dir.pop()
+
+            # Turns the sub_dir list into a string for the regex to search.
+            # It also removes the "," and replaces them with spaces.
+            #sub_dir = ' '.join(sub_dir)
+
+            # Creates a folder named backup-<number> where <number> will
+            # be the date the folder was created.
+            new_baup_time = datetime.datetime.now().strftime("%Y%m%d-%H%M")
+            folder_name = "\\backup-"
+            os.mkdir(dst_dir + folder_name + new_baup_time)
     sys.exit()
     
 # Runs the functionp
