@@ -54,6 +54,8 @@ def main(argv):
             dst_dir = arg
         elif opt in ("-i"):
             print("This will install the script to your OS.")
+            print("Support for this is not available in this version.")
+            print("Please use SETUP.py manually.")
         elif opt in ("-e"):
             print("This is an easteregg.")
             print("It's not particularly yummy.")
@@ -77,25 +79,6 @@ def main(argv):
             # directories.
             print("Given source directory tree", root_dir)
             print("Given destination directory tree", dst_dir)
-
-            # For-loop to fill the variable sub_dir with destination
-            # sub-folders for the regex to search.
-            #sub_dir = []
-            #for baup_root, baup_dir, baup_files in os.walk(dst_dir):
-            #    if baup_dir == []:
-            #        continue
-            #    else:
-            #        sub_dir.append(baup_dir)
-
-            # Removes the sub directories from the list sub_dir leaving only
-            # the folders named backup-<number>
-            #for entry in sub_dir[1:]:
-            #    sub_dir.pop()
-            #sub_dir = sub_dir.pop()
-
-            # Turns the sub_dir list into a string for the regex to search.
-            # It also removes the "," and replaces them with spaces.
-            #sub_dir = ' '.join(sub_dir)
 
             # Creates a folder named backup-<number> where <number> will
             # be the date the folder was created.
