@@ -27,8 +27,6 @@ will increment on the new directory.
 Development
 ========
 At this date I am the only developer working on this project.
-Please note that the backupy.py, SETUP.py in the´root directory is only for
-development purposes.
 If you want to push some code to the project make a new folder named
 backupy<version number> and put your files in there.
 

@@ -24,7 +24,8 @@ import shutil
 # The functions making up the script
 def install_script():
     if os.name == "nt":
-        print("Installation of the script now begins.")
+        print("Your operating system is not supported in this version.")
+        print("Support will be added in the foreseeable future.")
     elif os.name == "posix":
         print("Installation of the script now begins.")
         print("Copying backup.py to '/usr/local/bin'...")
