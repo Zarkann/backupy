@@ -15,6 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# ~Meta~
+# Meta-data variables.
+version = "2.0"
+
 # ~Modules~
 # Imports the modules the script will use.
 import datetime
@@ -22,6 +26,7 @@ import getopt
 import os
 import shutil
 import sys
+import tarfile
 
 # ~Functions~
 # The functions making up the script
@@ -29,10 +34,11 @@ def main(argv):
     # Creates the empty variables needed in the script
     root_dir = ''
     dst_dir = ''
+    archive = False
     
     # Looks for arguments if any.
     try:
-        opts, args = getopt.getopt(argv,"heis:d:",["root_dir=","dst_dir="])
+        opts, args = getopt.getopt(argv,"aheivs:d:",["root_dir=","dst_dir="])
     # Specifies what happens if a there is no viable commands.
     except getopt.GetoptError:
         print("Command not found. Use the -h for help.")
@@ -44,6 +50,8 @@ def main(argv):
             print("\nbackup.py is a script to be used for backing up your chosen directories.")
             print("You can do this with the following syntax.")
             print("backup.py -s <source directory> -d <destination directory>")
+            print("If you also want to compress your backup folder into a")
+            print(".tar archive. Enter the flag '-a'")
             print("\nIf you want to 'install' the script to be called from")
             print("the command prompt. Run the command -i.")
             print("\n\nbackup.py should work with both python 2.x and 3.x")
@@ -58,6 +66,11 @@ def main(argv):
         elif opt in ("-e"):
             print("This is an easteregg.")
             print("It's not particularly yummy.")
+        elif opt in ("-a"):
+            print("Your directory will be archived.")
+            archive = True
+        elif opt in ("-v"):
+            print("This is backupy version ", version, ".")
 
     # Makes sure the script is not without values on src_dir and dst_dir
     if root_dir != '' or dst_dir != '':
@@ -82,17 +95,36 @@ def main(argv):
             print("Given source directory tree", root_dir)
             print("Given destination directory tree", dst_dir)
 
-            # Creates a folder named backup-<number> where <number> will
-            # be the date the folder was created.
+            # Creates a folder named backup-<YYYYMMDD>-<hhmm>.
             new_baup_time = datetime.datetime.now().strftime("%Y%m%d-%H%M")
-            folder_name = dst_dir + "\\backup-" + new_baup_time
-
+            folder_name = "backup-" + new_baup_time
+            folder_path = dst_dir + "\\backup-" + new_baup_time
+ 
             # This is the main copy function of the script. Which will copy
             # everything from the src_root
-            shutil.copytree(root_dir, folder_name, symlinks=False, ignore=None)
+            shutil.copytree(root_dir, folder_path, symlinks=False, ignore=None)
             print("DONE!")
+
+            # If the -a flag was entered backupy will commence its archive
+            # if-loop. Archiving the backup<YYYYMMDD-hhmm> folder.
+            if archive == True:
+                print("Creating .tar-archive...")
+                print("Compressing .tar-archive...")
+                # Creates the file folder_path.tar.gz, a compressed tar archive.
+                arc_file = tarfile.open(folder_path + ".tar.gz", "w:gz")
+                # Adds folder_path to the tar.gz archive.
+                arc_file.add(folder_path)
+                # Writes the .tar.gz-file to disk.
+                arc_file.close()
+                print("DONE!")
+                if os.path.isdir(folder_path):
+                    print("Removing unnecessary files...")
+                    shutil.rmtree(folder_path)
+                    print("DONE!")
+            print("Backup completed. Thanks for using backupy.")
+            print("Bye.")
     sys.exit()
-    
+
 # Runs the functionp
 if __name__ == "__main__":
     main(sys.argv[1:])

@@ -59,7 +59,6 @@ def main(argv):
         elif opt in ("-i"):
             print("This will install the script to your OS.")
             print("Support for this is not available in this version.")
-            print("Please use SETUP.py manually.")
         elif opt in ("-e"):
             print("This is an easteregg.")
             print("It's not particularly yummy.")
@@ -80,8 +79,11 @@ def main(argv):
             print("Creating destination directories")
             os.makedirs(dst_dir)
 
+        # NOTICE! I break the previous if-loop here to make sure that when
+        # dst_path does not exist the program will check again if dst_path
+        # exists. Now it hopefully does and thus goes on to copying the files.
         # If the dst_dir exists. Do this.
-        elif os.path.exists(dst_dir):
+        if os.path.exists(dst_dir):
             # Self-explanatory. Prints the chosen source and destination
             # directories.
             print("Given source directory tree", root_dir)
