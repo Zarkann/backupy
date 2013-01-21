@@ -70,7 +70,7 @@ def main(argv):
             print("Your directory will be archived.")
             archive = True
         elif opt in ("-v"):
-            print("This is backupy version ", version, ".")
+            print("This is backupy version %r.") % version
 
     # Makes sure the script is not without values on src_dir and dst_dir
     if root_dir != '' or dst_dir != '':
@@ -92,8 +92,8 @@ def main(argv):
         if os.path.exists(dst_dir):
             # Self-explanatory. Prints the chosen source and destination
             # directories.
-            print("Given source directory tree", root_dir)
-            print("Given destination directory tree", dst_dir)
+            print("Given source directory tree %r.") % root_dir
+            print("Given destination directory tree %r.") % dst_dir
 
             # Creates a folder named backup-<YYYYMMDD>-<hhmm>.
             new_baup_time = datetime.datetime.now().strftime("%Y%m%d-%H%M")

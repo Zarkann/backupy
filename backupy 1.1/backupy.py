@@ -15,6 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# ~Meta~
+# Meta-data
+version = "1.1"
+
 # ~Modules~
 # Imports the modules the script will use.
 import datetime
@@ -34,7 +38,7 @@ def main(argv):
     
     # Looks for arguments if any.
     try:
-        opts, args = getopt.getopt(argv,"aheis:d:",["root_dir=","dst_dir="])
+        opts, args = getopt.getopt(argv,"aheivs:d:",["root_dir=","dst_dir="])
     # Specifies what happens if a there is no viable commands.
     except getopt.GetoptError:
         print("Command not found. Use the -h for help.")
@@ -65,6 +69,8 @@ def main(argv):
         elif opt in ("-a"):
             print("Your directory will be archived.")
             archive = True
+        elif opt in ("-v"):
+            print("This is backupy version %r.") % version
 
     # Makes sure the script is not without values on src_dir and dst_dir
     if root_dir != '' or dst_dir != '':
@@ -86,8 +92,8 @@ def main(argv):
         if os.path.exists(dst_dir):
             # Self-explanatory. Prints the chosen source and destination
             # directories.
-            print("Given source directory tree", root_dir)
-            print("Given destination directory tree", dst_dir)
+            print("Given source directory tree %r.") % root_dir
+            print("Given destination directory tree %r.") % dst_dir
 
             # Creates a folder named backup-<YYYYMMDD>-<hhmm>.
             new_baup_time = datetime.datetime.now().strftime("%Y%m%d-%H%M")
