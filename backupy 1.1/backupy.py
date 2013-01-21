@@ -19,7 +19,6 @@
 # Imports the modules the script will use.
 import datetime
 import getopt
-import gzip
 import os
 import shutil
 import sys
@@ -102,18 +101,22 @@ def main(argv):
             # if-loop. Archiving the backup<YYYYMMDD-hhmm> folder.
             if archive == True:
                 print("Creating .tar-archive...")
-                arc_file = tarfile.open(folder_path + ".tar", "w")
+                print("Compressing .tar-archive...")
+                # Creates the file folder_path.tar.gz, a compressed tar archive.
+                arc_file = tarfile.open(folder_path + ".tar.gz", "w:gz")
+                # Adds folder_path to the tar.gz archive.
                 arc_file.add(folder_path)
-                new_folder_path = folder_path + ".tar"
+                # Writes the .tar.gz-file to disk.
                 arc_file.close()
                 print("DONE!")
-                print("Compressing ", new_folder_path, "....")
-                com_arc_file = gzip.open(new_folder_path + ".gz", "wb")
-                com_arc_file.write(folder_path)
-                com_arc_file.close()
-                print("DONE!")
+                if os.path.isdir(folder_path):
+                    print("Removing unnecessary files...")
+                    shutil.rmtree(folder_path)
+                    print("DONE!")
+                print("Backup completed. Thanks for using backupy.")
+                print("Bye.")
     sys.exit()
-    
+
 # Runs the functionp
 if __name__ == "__main__":
     main(sys.argv[1:])
