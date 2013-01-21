@@ -11,14 +11,12 @@ Usage
 =======
 
 The script works by taking several arguments. The syntax is.
-backupy.py [-h] [-i] [-l] [-v] ( [-a] [-s] <source root> [-d] <destination root> )
--a archives the backup folder.
+backupy.py [-h] [-i] [-l] [-s] <source root> [-d] <destination root>
 -h shows a help message.
 -i runs install_script to add the script to a folder in the $PATH.
 -l lists the license agreement
 -s specifies source root directory
 -d specifies source destination directory
--v prints what version backupy is at.
 
 When a source root and destination root is specified the script will
 copy all items and sub-directories from the source root into a folder
