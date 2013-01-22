@@ -57,12 +57,6 @@ def install_linux():
         shutil.copy2(home_dir + file_name, home_dir + file_name + "~")
         # Reads the file ~/.bashrc to alias_file.
         alias_file = open(home_dir + file_name).read()
-        match_result = False
-        bashrc_match = re.finditer("^# User specific aliases and functions$", alias_file)
-        # For-loop to search bashrc_match for entries if any.
-        for entry in bashrc_match:
-            match_result = True
-            pass
-        # entry.end() denotes the end-of-string character for the entry
-        # entry.start() denotes the start-of-string character for the entry
-        # Add something that will let me append to the end of the found string.
+        # Compiles the regex for use later.
+        bashrc_regx = re.compile("(?<='# User specific aliases and functions\n')")
+        regx_result = re.search(bashrc_regx, alias_file)

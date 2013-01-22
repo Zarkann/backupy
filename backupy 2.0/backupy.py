@@ -17,7 +17,8 @@
 
 # ~Meta~
 # Meta-data variables.
-version = "2.0"
+__AUTHOR__ = "Jimmie Odelius"
+__VERSION__ = "2.0.3"
 
 # ~Modules~
 # Imports the modules the script will use.
@@ -70,7 +71,8 @@ def main(argv):
             print("Your directory will be archived.")
             archive = True
         elif opt in ("-v"):
-            print("This is backupy version %r.") % version
+            print("This is backupy version %r.") % __VERSION__
+            print("Created by %r.") % __AUTHOR__
 
     # Makes sure the script is not without values on src_dir and dst_dir
     if root_dir != '' or dst_dir != '':
