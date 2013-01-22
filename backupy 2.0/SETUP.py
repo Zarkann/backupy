@@ -36,8 +36,9 @@ def install_linux():
     # Copies backupy with meta-data to /usr/bin/local to make it "callable"
     # from the command prompt.
     if not os.path.exists("/usr/local/bin/backupy"):
-        os.mkdir("/usr/local/bin/backupy [, mode=0557]")
-    for root_dir, sub_dir, files in os.walk():
+        os.makedirs("/usr/local/bin/backupy")
+    for root_dir, sub_dir, files in os.walk("./"):
+        install_dir = ''.join(root_dir, sub_dir, files)
         print("Copying %r to /usr/local/bin/backupy ...") % files
         shutil.copy2(root_dir + sub_dir + files, "/usr/local/bin/backupy")
         print("DONE!")
@@ -55,7 +56,8 @@ def install_linux():
         if os.path.isdir(root_dir + sub_dir):
             home_dir = ''.join(root_dir + sub_dir)
         # Creates the copy ~/.bashrc~ as a backup.
-        shutil.copy2(home_dir + file_name, home_dir + file_name + "~")
+        bashrc_path = ''.join(root_dir, sub_dir, files)
+        shutil.copy2(bashrc_path + "~")
         # Reads the file ~/.bashrc to alias_file.
         alias_file = open(home_dir + file_name).read()
         # Compiles the regex for use later.
