@@ -11,8 +11,9 @@ Usage
 -----
 
 The script works by taking several arguments. The syntax is.
+
     backupy.py [ ( -h | -v | -i | -e ) ] | [ -s <source root> -d <destination root> ( -a ) ]
-    
+
     -h shows a help message.
     -i runs install_script to add the script to a folder in the $PATH.
     -l lists the license agreement.
