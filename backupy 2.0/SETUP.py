@@ -24,22 +24,23 @@ import sys
 
 # ~Functions~
 # The functions making up the script
-def install_script():
+def installer():
     if os.name == "nt":
-        print("Your operating system is not supported in this version.")
-        print("Support will be added in the foreseeable future.")
+        install_nt()
     elif os.name == "posix":
         install_linux()
-        exit()
 
 def install_linux():
     print("backupy will now be installed as a callable command on the command")
     print("prompt. You may of course do so manually if you wish.")
-    # Copies backupy.py with meta-data to /usr/bin/local to make it "callable"
+    # Copies backupy with meta-data to /usr/bin/local to make it "callable"
     # from the command prompt.
-    print("Copying script to '/usr/local/bin'...")
-    shutil.copy2("./backupy.py", "/usr/bin/local")
-    print("DONE!")
+    if not os.path.exists("/usr/local/bin/backupy"):
+        os.mkdir("/usr/local/bin/backupy [, mode=0557]")
+    for root_dir, sub_dir, files in os.walk():
+        print("Copying %r to /usr/local/bin/backupy ...") % files
+        shutil.copy2(root_dir + sub_dir + files, "/usr/local/bin/backupy")
+        print("DONE!")
     # Adds the alias backupy for users to make things tidier. Allowing users
     # to write backupy instead of backupy.py to use the program.
     print("Adding backupy as an alias...")
@@ -60,3 +61,11 @@ def install_linux():
         # Compiles the regex for use later.
         bashrc_regx = re.compile("(?<='# User specific aliases and functions\n')")
         regx_result = re.search(bashrc_regx, alias_file)
+
+def install_nt():
+    print("Your operating is not yet supported.")
+    print("You can either wait for an update or take matters into your own hands.")
+    print("Whatever you choose. Have a nice day. :)")
+
+installer()
+exit()

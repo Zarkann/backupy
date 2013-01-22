@@ -18,7 +18,7 @@
 # ~Meta~
 # Meta-data variables.
 __AUTHOR__ = "Jimmie Odelius"
-__VERSION__ = "2.0.3"
+__VERSION__ = "2.0.4"
 
 # ~Modules~
 # Imports the modules the script will use.
@@ -26,6 +26,7 @@ import datetime
 import getopt
 import os
 import shutil
+import subprocess
 import sys
 import tarfile
 
@@ -56,14 +57,18 @@ def main(argv):
             print("\nIf you want to 'install' the script to be called from")
             print("the command prompt. Run the command -i.")
             print("\n\nbackup.py should work with both python 2.x and 3.x")
-            exit()
         elif opt in ("-s"):
             root_dir = arg
         elif opt in ("-d"):
             dst_dir = arg
         elif opt in ("-i"):
-            print("This will install the script to your OS.")
-            print("Support for this is not available in this version.")
+            if os.name == "nt" or os.name == "posix":
+                subprocess.call([sys.executable, "SETUP.py"])
+                exit()
+            else:
+                print("Your operating system is not supported.")
+                print("Please wait for an update or add support yourself.")
+                print("Have a nice day.")
         elif opt in ("-e"):
             print("This is an easteregg.")
             print("It's not particularly yummy.")
@@ -130,3 +135,4 @@ def main(argv):
 # Runs the functionp
 if __name__ == "__main__":
     main(sys.argv[1:])
+    exit()
