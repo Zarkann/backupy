@@ -15,6 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# ~Meta~
+# Meta-data variables
+__AUTHOR__ = "Jimmie Odelius"
+__VERSION__ = "0.1.2"
+
 # ~Modules~
 # Imports the modules the script will use.
 import os
@@ -33,36 +38,25 @@ def installer():
 def install_linux():
     print("backupy will now be installed as a callable command on the command")
     print("prompt. You may of course do so manually if you wish.")
+
     # Copies backupy with meta-data to /usr/bin/local to make it "callable"
     # from the command prompt.
     if not os.path.exists("/usr/local/bin/backupy"):
         os.makedirs("/usr/local/bin/backupy")
-    for root_dir, sub_dir, files in os.walk("./"):
-        install_dir = ''.join(root_dir, sub_dir, files)
-        print("Copying %r to /usr/local/bin/backupy ...") % files
-        shutil.copy2(root_dir + sub_dir + files, "/usr/local/bin/backupy")
-        print("DONE!")
-    # Adds the alias backupy for users to make things tidier. Allowing users
-    # to write backupy instead of backupy.py to use the program.
-    print("Adding backupy as an alias...")
-    # Creates the list home_dir
-    home_dir = []
-    # Contains a string with the file-name for the file containing aliases.
-    file_name = "/.bashrc"
-    # For loop to go through the users home-folders.
-    print("Finding home folders.")
-    for root_dir, sub_dir, files in os.walk("/home"):
-        # If a path exists, for example /home/student, append path to home_dir.
-        if os.path.isdir(root_dir + sub_dir):
-            home_dir = ''.join(root_dir + sub_dir)
-        # Creates the copy ~/.bashrc~ as a backup.
-        bashrc_path = ''.join(root_dir, sub_dir, files)
-        shutil.copy2(bashrc_path + "~")
-        # Reads the file ~/.bashrc to alias_file.
-        alias_file = open(home_dir + file_name).read()
-        # Compiles the regex for use later.
-        bashrc_regx = re.compile("(?<='# User specific aliases and functions\n')")
-        regx_result = re.search(bashrc_regx, alias_file)
+        shutil.copytree(".", "/usr/local/bin/backupy")
+    elif os.path.exists("/usr/local/bin/backupy"):
+        shutil.copytree("/usr/local/bin/backupy")
+
+    # Finds out what home directories exist in the os.
+    home_user = []
+    for home_root, home_dir, home_files in os.walk("/home"):
+        home_user.append(home_dir)
+    # Removes all sub-lists except the first one containing the home directories.
+    home_user = home_user[0]
+    # Adds the alias backupy in ~/.bashrc of all users.
+    for entry in home_user:
+        print("Function to search and replace an alias in .bashrc")
+    print("Functino to search and replace an alias in /root/.bashrc")
 
 def install_nt():
     print("Your operating is not yet supported.")
