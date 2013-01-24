@@ -37,9 +37,11 @@ def install_linux():
     # from the command prompt.
     if not os.path.exists("/usr/local/bin/backupy"):
         os.makedirs("/usr/local/bin/backupy")
-    print("Copying backupy to /usr/local/bin/backupy")
-    shutil.copytree(".", "/usr/local/bin/backupy/.")
-    print("DONE!")
+    for root_dir, sub_dir, files in os.walk("./"):
+        install_dir = ''.join(root_dir, sub_dir, files)
+        print("Copying %r to /usr/local/bin/backupy ...") % files
+        shutil.copy2(root_dir + sub_dir + files, "/usr/local/bin/backupy")
+        print("DONE!")
     # Adds the alias backupy for users to make things tidier. Allowing users
     # to write backupy instead of backupy.py to use the program.
     print("Adding backupy as an alias...")
@@ -50,7 +52,17 @@ def install_linux():
     # For loop to go through the users home-folders.
     print("Finding home folders.")
     for root_dir, sub_dir, files in os.walk("/home"):
-        print("INSER SHIT HERE!")
+        # If a path exists, for example /home/student, append path to home_dir.
+        if os.path.isdir(root_dir + sub_dir):
+            home_dir = ''.join(root_dir + sub_dir)
+        # Creates the copy ~/.bashrc~ as a backup.
+        bashrc_path = ''.join(root_dir, sub_dir, files)
+        shutil.copy2(bashrc_path + "~")
+        # Reads the file ~/.bashrc to alias_file.
+        alias_file = open(home_dir + file_name).read()
+        # Compiles the regex for use later.
+        bashrc_regx = re.compile("(?<='# User specific aliases and functions\n')")
+        regx_result = re.search(bashrc_regx, alias_file)
 
 def install_nt():
     print("Your operating is not yet supported.")

@@ -16,8 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # ~Meta~
-# Meta-data
-version = "1.1"
+# Meta-data variables.
+__AUTHOR__ = "Jimmie Odelius"
+__VERSION__ = "2.0.4"
 
 # ~Modules~
 # Imports the modules the script will use.
@@ -25,6 +26,7 @@ import datetime
 import getopt
 import os
 import shutil
+import subprocess
 import sys
 import tarfile
 
@@ -55,14 +57,18 @@ def main(argv):
             print("\nIf you want to 'install' the script to be called from")
             print("the command prompt. Run the command -i.")
             print("\n\nbackup.py should work with both python 2.x and 3.x")
-            exit()
         elif opt in ("-s"):
             root_dir = arg
         elif opt in ("-d"):
             dst_dir = arg
         elif opt in ("-i"):
-            print("This will install the script to your OS.")
-            print("Support for this is not available in this version.")
+            if os.name == "nt" or os.name == "posix":
+                subprocess.call([sys.executable, "SETUP.py"])
+                exit()
+            else:
+                print("Your operating system is not supported.")
+                print("Please wait for an update or add support yourself.")
+                print("Have a nice day.")
         elif opt in ("-e"):
             print("This is an easteregg.")
             print("It's not particularly yummy.")
@@ -70,7 +76,8 @@ def main(argv):
             print("Your directory will be archived.")
             archive = True
         elif opt in ("-v"):
-            print("This is backupy version %r.") % version
+            print("This is backupy version %r.") % __VERSION__
+            print("Created by %r.") % __AUTHOR__
 
     # Makes sure the script is not without values on src_dir and dst_dir
     if root_dir != '' or dst_dir != '':
@@ -99,7 +106,7 @@ def main(argv):
             new_baup_time = datetime.datetime.now().strftime("%Y%m%d-%H%M")
             folder_name = "backup-" + new_baup_time
             folder_path = dst_dir + "\\backup-" + new_baup_time
-
+ 
             # This is the main copy function of the script. Which will copy
             # everything from the src_root
             shutil.copytree(root_dir, folder_path, symlinks=False, ignore=None)
@@ -121,10 +128,11 @@ def main(argv):
                     print("Removing unnecessary files...")
                     shutil.rmtree(folder_path)
                     print("DONE!")
-                print("Backup completed. Thanks for using backupy.")
-                print("Bye.")
+            print("Backup completed. Thanks for using backupy.")
+            print("Bye.")
     sys.exit()
 
 # Runs the functionp
 if __name__ == "__main__":
     main(sys.argv[1:])
+    exit()
