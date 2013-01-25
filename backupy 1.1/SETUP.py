@@ -15,15 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# ~Meta~
-# Meta-data variables
-__AUTHOR__ = "Jimmie Odelius"
-__VERSION__ = "0.1.2"
-
 # ~Modules~
 # Imports the modules the script will use.
 import os
-import re
 import shutil
 import sys
 
@@ -38,6 +32,8 @@ def installer():
 def install_linux():
     print("backupy will now be installed as a callable command on the command")
     print("prompt. You may of course do so manually if you wish.")
+    print("Make sure that you have permission to edit the files of the other\n")
+    print("users of the system. (Including '/root/.bashrc')")
 
     # Copies backupy with meta-data to /usr/bin/local to make it "callable"
     # from the command prompt.
@@ -55,8 +51,23 @@ def install_linux():
     home_user = home_user[0]
     # Adds the alias backupy in ~/.bashrc of all users.
     for entry in home_user:
-        print("Function to search and replace an alias in .bashrc")
-    print("Functino to search and replace an alias in /root/.bashrc")
+        os.chdir(home_root + entry)
+        bashrc_file = open(".bashrc", "a")
+        print("Appends alias to the ~/.bashrc file of %r") % entry
+        bashrc_file.write("\n\n# backupy alias\n")
+        bashrc_file.write("alias backupy='python /usr/local/bin/backupy.py'")
+        bashrc_file.close()
+        print("DONE!")
+    os.chdir("/root")
+    bashrc_file = open(".bashrc", "a")
+    print("Appends alias to the ~/.bashrc fiel of the root user.")
+    bashrc_file.write("\n\n# backupy alias\n")
+    bashrc_file.write("alias backupy='python /usr/local/bin/backupy.py'")
+    bashrc_file.close()
+    print("DONE!")
+    print("Aliases added.")
+    print("Thank you for installing backupy on your system.")
+    print("Have a nice day.")
 
 def install_nt():
     print("Your operating is not yet supported.")

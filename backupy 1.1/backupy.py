@@ -18,7 +18,7 @@
 # ~Meta~
 # Meta-data variables.
 __AUTHOR__ = "Jimmie Odelius"
-__VERSION__ = "2.0.4"
+__VERSION__ = "2.0.5a"
 
 # ~Modules~
 # Imports the modules the script will use.
@@ -40,7 +40,7 @@ def main(argv):
     
     # Looks for arguments if any.
     try:
-        opts, args = getopt.getopt(argv,"aheivs:d:",["root_dir=","dst_dir="])
+        opts, args = getopt.getopt(argv,"aheivms:d:")
     # Specifies what happens if a there is no viable commands.
     except getopt.GetoptError:
         print("Command not found. Use the -h for help.")
