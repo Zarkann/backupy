@@ -35,9 +35,24 @@ def install_linux():
     print("Make sure that you have permission to edit the files of the other\n")
     print("users of the system. (Including '/root/.bashrc')")
 
-    # Copies backupy with meta-data to /usr/bin/local to make it "callable"
-    # from the command prompt.
-    shutil.copytree("./", "/usr/local/bin/backupy")
+    # Creates the directory /usr/local/bin/backupy for backupy to reside in.
+    try:
+        print("Creating /usr/local/bin/backupy...")
+        os.mkdir("/usr/local/bin/backupy")
+        print("DONE!")
+    except OSError as error:
+        print(error)
+        pass
+
+    # For-loop that copies the backupy files to the new directory.
+    for loc_root, loc_sub, loc_file in os.walk("./"):
+        try:
+            print("Copying %r to /usr/local/bin/backupy") % loc_file
+            shutil.copy2("./" + loc_file, "/usr/local/bin/backupy")
+            print("DONE!")
+        except shutil.Error as error:
+            print(error)
+            sys.exit(2)
 
     # Finds out what home directories exist in the os.
     home_user = []
@@ -45,6 +60,7 @@ def install_linux():
         home_user.append(home_dir)
     # Removes all sub-lists except the first one containing the home directories.
     home_user = home_user[0]
+
     # Adds the alias backupy in ~/.bashrc of all users.
     for entry in home_user:
         # Attempts to change directory. Will print an error statement if it fails.
@@ -64,9 +80,10 @@ def install_linux():
         except IOError as error:
             print(error)
             continue
+    # Edits the .bashrc file for the root user.
     os.chdir("/root")
     bashrc_file = open(".bashrc", "a")
-    print("Appends alias to the ~/.bashrc fiel of the root user.")
+    print("Appends alias to the ~/.bashrc file of the root user.")
     bashrc_file.write("\n\n# backupy alias\n")
     bashrc_file.write("alias backupy='python /usr/local/bin/backupy/backupy.py'")
     bashrc_file.close()
@@ -78,7 +95,6 @@ def install_linux():
 def install_nt():
     print("Your operating is not yet supported.")
     print("You can either wait for an update or take matters into your own hands.")
-    print("Whatever you choose. Have a nice day. :)")
 
 installer()
 exit()

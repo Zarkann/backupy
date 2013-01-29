@@ -18,7 +18,7 @@
 # ~Meta~
 # Meta-data variables.
 __AUTHOR__ = "Jimmie Odelius"
-__VERSION__ = "1.0.6"
+__VERSION__ = "1.1.6a"
 
 # ~Modules~
 # Imports the modules the script will use.
@@ -56,7 +56,7 @@ def main(argv):
             print(".tar archive. Enter the flag '-a'")
             print("\nIf you want to 'install' the script to be called from")
             print("the command prompt. Run the command -i.")
-            print("\n\nbackup.py should work with both python 2.x and 3.x")
+            print("\nbackup.py should work with both python 2.x and 3.x")
         elif opt in ("-s"):
             root_dir = arg
         elif opt in ("-d"):
@@ -95,7 +95,6 @@ def main(argv):
         # NOTICE! I break the previous if-loop here to make sure that when
         # dst_path does not exist the program will check again if dst_path
         # exists. Now it hopefully does and thus goes on to copying the files.
-        # If the dst_dir exists. Do this.
         if os.path.exists(dst_dir):
             # Self-explanatory. Prints the chosen source and destination
             # directories.

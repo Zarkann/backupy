@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Komodo Project File - DO NOT EDIT -->
 <project id="c99f9fff-c4e6-44f7-b434-62af222b85ad" kpf_version="5" name="backupy.komodoproject">
-<file id="7b278059-444b-46cd-851d-cc8c4677cea4" idref="c99f9fff-c4e6-44f7-b434-62af222b85ad" name="LICENSE.txt" url="LICENSE.txt">
+<file id="2d6c8be1-378d-46f7-8e17-6e40cb6a6dc4" idref="c99f9fff-c4e6-44f7-b434-62af222b85ad" name="README.txt" url="backupy-1.1.6/README.txt">
+</file>
+<file id="4515f8ac-8651-40d3-9adb-96ee6bbd0f0e" idref="c99f9fff-c4e6-44f7-b434-62af222b85ad" name="LICENSE.txt" url="LICENSE.txt">
+</file>
+<livefolder id="59cfda47-25f7-43d4-ad84-5f19f12531a7" idref="c99f9fff-c4e6-44f7-b434-62af222b85ad" name="backupy-1.1.6" url="backupy-1.1.6">
+</livefolder>
+<file id="6c045532-2814-40e4-a295-0da81d6b3257" idref="c99f9fff-c4e6-44f7-b434-62af222b85ad" name="README.md" url="README.md">
 </file>
 <file id="97edbb03-f428-4f1c-abac-aa8353f9510e" idref="c99f9fff-c4e6-44f7-b434-62af222b85ad" name=".gitignore" url=".gitignore">
 </file>
-<file id="afd02a0d-91b3-415f-9ccc-5f572ca36836" idref="c99f9fff-c4e6-44f7-b434-62af222b85ad" name="README.md" url="README.md">
-</file>
-<livefolder id="b2a6c1aa-95a3-47cd-975c-5013122a6f74" idref="c99f9fff-c4e6-44f7-b434-62af222b85ad" name="backupy 1.1" url="backupy%201.1">
-</livefolder>
 </project>
