@@ -105,7 +105,10 @@ def main(argv):
             # Creates a folder named backup-<YYYYMMDD>-<hhmm>.
             new_baup_time = datetime.datetime.now().strftime("%Y%m%d-%H%M")
             folder_name = "backup-" + new_baup_time
-            folder_path = dst_dir + "\\backup-" + new_baup_time
+            if os.name == "posix":
+                folder_path = dst_dir + "/" + folder_name
+            elif os.name == "nt":
+                folder_path = dst_dir + "\\" + folder_name
  
             # This is the main copy function of the script. Which will copy
             # everything from the src_root
@@ -132,7 +135,7 @@ def main(argv):
             print("Bye.")
     sys.exit()
 
-# Runs the functionp
+# Runs the function
 if __name__ == "__main__":
     main(sys.argv[1:])
     exit()

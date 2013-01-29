@@ -37,11 +37,7 @@ def install_linux():
 
     # Copies backupy with meta-data to /usr/bin/local to make it "callable"
     # from the command prompt.
-    if not os.path.exists("/usr/local/bin/backupy"):
-        os.makedirs("/usr/local/bin/backupy")
-        shutil.copytree(".", "/usr/local/bin/backupy")
-    elif os.path.exists("/usr/local/bin/backupy"):
-        shutil.copytree("/usr/local/bin/backupy")
+    shutil.copytree("./", "/usr/local/bin/backupy")
 
     # Finds out what home directories exist in the os.
     home_user = []
@@ -51,18 +47,28 @@ def install_linux():
     home_user = home_user[0]
     # Adds the alias backupy in ~/.bashrc of all users.
     for entry in home_user:
-        os.chdir(home_root + entry)
-        bashrc_file = open(".bashrc", "a")
-        print("Appends alias to the ~/.bashrc file of %r") % entry
-        bashrc_file.write("\n\n# backupy alias\n")
-        bashrc_file.write("alias backupy='python /usr/local/bin/backupy.py'")
-        bashrc_file.close()
-        print("DONE!")
+        # Attempts to change directory. Will print an error statement if it fails.
+        try:
+            os.chdir(home_root + entry)
+        except OSError as error:
+            print("({})".format(error))
+            continue
+        # Attempts to open the file .bashrc. If it fails it will print an error.
+        try:
+            bashrc_file = open(".bashrc", "a")
+            print("Appends alias to the ~/.bashrc file of %r") % entry
+            bashrc_file.write("\n\n# backupy alias\n")
+            bashrc_file.write("alias backupy='python /usr/local/bin/backupy/backupy.py'")
+            bashrc_file.close()
+            print("DONE!")
+        except IOError as error:
+            print("({})".format(error))
+            continue
     os.chdir("/root")
     bashrc_file = open(".bashrc", "a")
     print("Appends alias to the ~/.bashrc fiel of the root user.")
     bashrc_file.write("\n\n# backupy alias\n")
-    bashrc_file.write("alias backupy='python /usr/local/bin/backupy.py'")
+    bashrc_file.write("alias backupy='python /usr/local/bin/backupy/backupy.py'")
     bashrc_file.close()
     print("DONE!")
     print("Aliases added.")
