@@ -44,15 +44,19 @@ def install_linux():
         print(error)
         pass
 
-    # For-loop that copies the backupy files to the new directory.
+    # For-loop that checks what files is in the backupy directory.
+    backupy_files = []
     for loc_root, loc_sub, loc_file in os.walk("./"):
+        backupy_files.append(loc_file)
+    
+    for entry in backupy_files:
         try:
             print("Copying %r to /usr/local/bin/backupy") % loc_file
             shutil.copy2("./" + loc_file, "/usr/local/bin/backupy")
             print("DONE!")
         except shutil.Error as error:
             print(error)
-            sys.exit(2)
+            continue
 
     # Finds out what home directories exist in the os.
     home_user = []

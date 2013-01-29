@@ -18,7 +18,7 @@
 # ~Meta~
 # Meta-data variables.
 __AUTHOR__ = "Jimmie Odelius"
-__VERSION__ = "1.1.6a"
+__VERSION__ = "1.1.6b"
 
 # ~Modules~
 # Imports the modules the script will use.
