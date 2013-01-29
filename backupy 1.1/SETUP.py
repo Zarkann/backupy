@@ -49,9 +49,9 @@ def install_linux():
     for entry in home_user:
         # Attempts to change directory. Will print an error statement if it fails.
         try:
-            os.chdir(home_root + entry)
+            os.chdir("/home/" + entry)
         except OSError as error:
-            print("({})".format(error))
+            print(error)
             continue
         # Attempts to open the file .bashrc. If it fails it will print an error.
         try:
@@ -62,7 +62,7 @@ def install_linux():
             bashrc_file.close()
             print("DONE!")
         except IOError as error:
-            print("({})".format(error))
+            print(error)
             continue
     os.chdir("/root")
     bashrc_file = open(".bashrc", "a")
