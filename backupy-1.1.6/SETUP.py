@@ -17,6 +17,7 @@
 
 # ~Modules~
 # Imports the modules the script will use.
+import backupy_strings
 import os
 import shutil
 import sys
@@ -30,17 +31,13 @@ def installer():
         install_linux()
 
 def install_linux():
-    print("backupy will now be installed as a callable command on the command")
-    print("prompt. You may of course do so manually if you wish.")
-    print("Make sure that you have permission to edit the files of the other")
-    print("users of the system. (Including '/root/.bashrc')")
-    print("\n")
+    print(backupy_strings.install_intro)
 
     # Creates the directory /usr/local/bin/backupy for backupy to reside in.
     try:
-        print("Creating /usr/local/bin/backupy...")
+        print("\tCreating /usr/local/bin/backupy...")
         os.mkdir("/usr/local/bin/backupy")
-        print("DONE!")
+        print("\tDONE!")
     except OSError as error:
         print(error)
         pass
@@ -55,9 +52,9 @@ def install_linux():
     # reachable from whatever user is logged in to the machine.
     for entry in backupy_files[0]:
         try:
-            print("Copying %r to /usr/local/bin/backupy") % entry
+            print("\tCopying %r to /usr/local/bin/backupy") % entry
             shutil.copy2("./" + entry, "/usr/local/bin/backupy")
-            print("DONE!")
+            print("\tDONE!")
         except shutil.Error as error:
             print(error)
             continue
@@ -82,11 +79,11 @@ def install_linux():
         # Attempts to open the file .bashrc. If it fails it will print an error.
         try:
             bashrc_file = open(".bashrc", "a")
-            print("Appends alias to the ~/.bashrc file of %r") % entry
+            print("\tAppends alias to the ~/.bashrc file of %r") % entry
             bashrc_file.write("\n\n# backupy alias\n")
             bashrc_file.write("alias backupy='python /usr/local/bin/backupy/backupy.py'")
             bashrc_file.close()
-            print("DONE!")
+            print("\tDONE!")
         except IOError as error:
             print(error)
             continue
@@ -94,24 +91,23 @@ def install_linux():
     os.chdir("/root")
     try:
         bashrc_file = open(".bashrc", "a")
-        print("Appends alias to the ~/.bashrc file of the root user.")
+        print("\tAppends alias to the ~/.bashrc file of the root user.")
         bashrc_file.write("\n\n# backupy alias\n")
         bashrc_file.write("alias backupy='python /usr/local/bin/backupy/backupy.py'")
         bashrc_file.close()
-        print("DONE!")
+        print("\tDONE!")
     except IOError as error:
         print(error)
-        print("Something went wrong. You have to add the alias yourself.")
+        print("\tSomething went wrong. You have to add the alias yourself.")
         pass
-    print("Aliases added.")
+    print("\tAliases added.")
     print("\n")
-    print("Thank you for installing backupy on your system.")
-    print("Please log out and log in again to make the aliases work.")
-    print("Have a nice day.")
+    print("\tThank you for installing backupy on your system.")
+    print("\tPlease log out and log in again to make the aliases work.")
+    print("\tHave a nice day.")
 
 def install_nt():
-    print("Your operating is not yet supported.")
-    print("You can either wait for an update or take matters into your own hands.")
+    print(backupy_strings.not_supported)
 
 installer()
 exit()

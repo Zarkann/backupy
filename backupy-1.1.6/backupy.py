@@ -18,10 +18,11 @@
 # ~Meta~
 # Meta-data variables.
 __AUTHOR__ = "Jimmie Odelius"
-__VERSION__ = "1.1.6c"
+__VERSION__ = "1.1.7"
 
 # ~Modules~
 # Imports the modules the script will use.
+import backupy_strings
 import datetime
 import getopt
 import os
@@ -43,54 +44,52 @@ def main(argv):
         opts, args = getopt.getopt(argv,"aheivms:d:")
     # Specifies what happens if a there is no viable commands.
     except getopt.GetoptError:
-        print("Command not found. Use the -h for help.")
+        print("\tCommand not found. Use the -h for help.")
         sys.exit(2)
 
     # Defines the commands usable with the script.
     for opt, arg in opts:
         if opt in ("-h"):
-            print("\nbackup.py is a script to be used for backing up your chosen directories.")
-            print("You can do this with the following syntax.")
-            print("backup.py -s <source directory> -d <destination directory>")
-            print("If you also want to compress your backup folder into a")
-            print(".tar archive. Enter the flag '-a'")
-            print("\nIf you want to 'install' the script to be called from")
-            print("the command prompt. Run the command -i.")
-            print("\nbackup.py should work with both python 2.x and 3.x")
+            print(backupy_strings.help_text)
         elif opt in ("-s"):
             root_dir = arg
         elif opt in ("-d"):
             dst_dir = arg
         elif opt in ("-i"):
-            if os.name == "nt" or os.name == "posix":
-                subprocess.call([sys.executable, "SETUP.py"])
-                exit()
-            else:
-                print("Your operating system is not supported.")
-                print("Please wait for an update or add support yourself.")
-                print("Have a nice day.")
+            try:
+                if os.name == "nt" or os.name == "posix":
+                    subprocess.call([sys.executable, "SETUP.py"])
+                    exit()
+                else:
+                    print(backupy_strings.not_supported)
+            except OSError as error:
+                print(error)
+                sys.exit(2)
         elif opt in ("-e"):
-            print("This is an easteregg.")
-            print("It's not particularly yummy.")
+            print(backupy_strings.easter)
         elif opt in ("-a"):
-            print("Your directory will be archived.")
+            print("\tYour directory will be archived.")
             archive = True
         elif opt in ("-v"):
-            print("This is backupy version %r.") % __VERSION__
-            print("Created by %r.") % __AUTHOR__
+            print("\tThis is backupy version %r.") % __VERSION__
+            print("\tCreated by %r.") % __AUTHOR__
 
     # Makes sure the script is not without values on src_dir and dst_dir
     if root_dir != '' or dst_dir != '':
         # If the source path does not exist. End the script.
         if not os.path.exists(root_dir):
-            print("Source path does not exist. Try again.")
+            print("\tSource path does not exist. Try again.")
             sys.exit(2)
 
         # Creates the destination tree if it does not exist.
         elif not os.path.exists(dst_dir):
-            print("Destination path does not exist.")
-            print("Creating destination directories")
-            os.makedirs(dst_dir)
+            try:
+                print("\tDestination path does not exist.")
+                print("\tCreating destination directories")
+                os.makedirs(dst_dir)
+            except OSError as error:
+                print(error)
+                pass
 
         # NOTICE! I break the previous if-loop here to make sure that when
         # dst_path does not exist the program will check again if dst_path
@@ -98,8 +97,8 @@ def main(argv):
         if os.path.exists(dst_dir):
             # Self-explanatory. Prints the chosen source and destination
             # directories.
-            print("Given source directory tree %r.") % root_dir
-            print("Given destination directory tree %r.") % dst_dir
+            print("\tGiven source directory tree %r.") % root_dir
+            print("\tGiven destination directory tree %r.") % dst_dir
 
             # Creates a folder named backup-<YYYYMMDD>-<hhmm>.
             new_baup_time = datetime.datetime.now().strftime("%Y%m%d-%H%M")
@@ -111,27 +110,53 @@ def main(argv):
  
             # This is the main copy function of the script. Which will copy
             # everything from the src_root
-            shutil.copytree(root_dir, folder_path, symlinks=False, ignore=None)
-            print("DONE!")
+            try:
+                print("\tCopying %r ...") % folder_path
+                shutil.copytree(root_dir, folder_path)
+                print("\tDONE!")
+            # This error check still fails to function if a directory
+            # already exists with the same name.
+            except shutil.Error as error:
+                print(error)
+                sys.exit(2)
 
             # If the -a flag was entered backupy will commence its archive
             # if-loop. Archiving the backup<YYYYMMDD-hhmm> folder.
             if archive == True:
-                print("Creating .tar-archive...")
-                print("Compressing .tar-archive...")
+                print("\tCreating .tar-archive...")
+                print("\tCompressing .tar-archive...")
                 # Creates the file folder_path.tar.gz, a compressed tar archive.
-                arc_file = tarfile.open(folder_path + ".tar.gz", "w:gz")
-                # Adds folder_path to the tar.gz archive.
-                arc_file.add(folder_path)
-                # Writes the .tar.gz-file to disk.
-                arc_file.close()
-                print("DONE!")
-                if os.path.isdir(folder_path):
-                    print("Removing unnecessary files...")
-                    shutil.rmtree(folder_path)
-                    print("DONE!")
-            print("Backup completed. Thanks for using backupy.")
-            print("Bye.")
+                try:
+                    arc_file = tarfile.open(folder_path + ".tar.gz", "w:gz")
+                    # Adds folder_path to the tar.gz archive.
+                    arc_file.add(folder_path)
+                    # Writes the .tar.gz-file to disk.
+                    arc_file.close()
+                    print("\tDONE!")
+                except tarfile.CompressionError as error:
+                    print(error)
+                    print("\tA compression error happened.")
+                    print("\tExiting program.")
+                    sys.exit(2)
+                except tarfile.TarError as error:
+                    print(error)
+                    print("\tSomething went wrong with the tar operation.")
+                    print("\tExiting program.")
+                    sys.exit(2)
+                try:
+                    if os.path.isdir(folder_path):
+                        print("\tRemoving unnecessary files...")
+                        try:
+                            shutil.rmtree(folder_path)
+                            print("\tDONE!")
+                        except shutil.Error as error:
+                            print(error)
+                            pass
+                except OSError as error:
+                    print(error)
+                    pass
+            print("\tBackup completed. Thanks for using backupy.")
+            print("\tBye.")
     sys.exit()
 
 # Runs the function
