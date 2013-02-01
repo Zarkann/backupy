@@ -5,10 +5,10 @@
 </file>
 <file id="4515f8ac-8651-40d3-9adb-96ee6bbd0f0e" idref="c99f9fff-c4e6-44f7-b434-62af222b85ad" name="LICENSE.txt" url="LICENSE.txt">
 </file>
-<livefolder id="59cfda47-25f7-43d4-ad84-5f19f12531a7" idref="c99f9fff-c4e6-44f7-b434-62af222b85ad" name="backupy-1.1.6" url="backupy-1.1.6">
-</livefolder>
 <file id="6c045532-2814-40e4-a295-0da81d6b3257" idref="c99f9fff-c4e6-44f7-b434-62af222b85ad" name="README.md" url="README.md">
 </file>
+<livefolder id="88e46d13-10d1-4a5a-8968-065fe856577a" idref="c99f9fff-c4e6-44f7-b434-62af222b85ad" name="backupy-1.1.7" url="backupy-1.1.7">
+</livefolder>
 <file id="97edbb03-f428-4f1c-abac-aa8353f9510e" idref="c99f9fff-c4e6-44f7-b434-62af222b85ad" name=".gitignore" url=".gitignore">
 </file>
 </project>
