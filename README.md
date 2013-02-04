@@ -7,8 +7,8 @@ other languages as well.
 
 Feel free to use and fork it if you want.
 
-Usage
------
+Usage - CLI Mode
+----------------
 
 The script works by taking several arguments. The syntax is.
 
@@ -27,6 +27,13 @@ copy all items and sub-directories from the source root into a folder
 named backup<numbeer> under the destination root. If several backups
 are directed to the same destination root the number in backup<number>
 will increment on the new directory.
+
+Usage - GUI Mode
+----------------
+
+This mode is currently under construction and is being built.
+No functionality at this time.
+Functionality will be implemented in version 1.2.X
 
 Development
 -----------
