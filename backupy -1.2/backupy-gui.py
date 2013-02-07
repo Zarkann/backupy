@@ -23,7 +23,11 @@ __VERSION__ = "1.2.0"
 # ~Modules~
 # Imports the modules the script will use.
 from Tkinter import *
+import datetime
+import errno
 import os
+import shutil
+import tarfile
 
 # ~Code~
 root = Tk()
@@ -41,9 +45,9 @@ class main:
         # First entry-bar with label.
         self.src_label = Label(self.menu, text = "Source")
         self.src_label.grid(row = 1, column = 1)
-        self.src_dir = Entry(self.menu)
-        self.src_dir.grid(row = 1, column = 2)
-        self.src_dir.focus_force()
+        self.root_dir = Entry(self.menu)
+        self.root_dir.grid(row = 1, column = 2)
+        self.root_dir.focus_force()
 
         # Second entry-bar with label.
         self.dst_label = Label(self.menu, text = "Destination")
@@ -78,7 +82,68 @@ class main:
 
     # OK-button function
     def backupclick(self):
-        print("Add backup-function here!")
+        # Checks if the program was given any entries.
+        if self.root_dir.get() != '' or self.dst_dir.get() != '':
+            # Raises an error message should src_dir not exist.
+            if not os.path.exists(self.root_dir.get()):
+                print("Add no dir path added message here!")
+
+            # Adds dst_dir should it not exist in the file system.
+            elif not os.path.exists(self.dst_dir.get()):
+                try:
+                    os.makedirs(self.dst_dir.get())
+                except OSError as e:
+                    print("Add error message here")
+                    pass
+
+            # NOTICE! I break the previous if-loop here to make sure that when
+            # dst_path does not exist the program will check again if dst_path
+            # exists. Now it hopefully does and thus goes on to copying the
+            # files.
+            if os.path.exists(self.dst_dir.get()):
+                # Creates a folder named backup-<YYYYMMDD>-<hhmm>
+                self.new_baup_time = datetime.datetime.now().strftime("%Y%m%d-\
+                %H%M")
+                self.folder_name = "backup-" + self.new_baup_time
+                if os.name == "posix":
+                    self.folder_path = self.dst_dir.get() + "/" + \
+                    self.folder_name
+                elif os.name == "nt":
+                    self.folder_path = self.dst_dir.get() + "\\" + \
+                    self.folder_name
+
+                # LET THERE BE COPIES!
+                # This is the copy function of the script.
+                try:
+                    shutil.copytree(self.root_dir.get(), self.folder_path)
+                except OSError as e:
+                    if error.errorno == errno.EEXIST:
+                        print("Error pop-up function")
+                        pass
+
+                # If the backup is supposed to be archived, this will perform
+                # the archivation process.
+                if self.archive_ck == True:
+                    # Creates the file folder_path.tar.gz
+                    print(self.archive_ck)
+                    try:
+                        self.arc_file = tarfile.open(self.folder_path + \
+                        "tar.gz", "w:gz")
+                        self.arc_file.add(self.folder_path)
+                        self.arc_file.close()
+                    except tarfile.CompressionError as e:
+                        print("Add error pop-up")
+                        pass
+                    except tarfile.TarError as e:
+                        print("Add error pop-up")
+                        pass
+                    try:
+                        if os.path.isdir(self.folder_path):
+                            shutil.rmtree(self.folder_path)
+                    except shutil.Error as e:
+                            print("Error pop-up here!")
+                            pass
+                print("SUCCESS/FAILURE message here")
 
     # Exit-button function
     def exitclick(self):
