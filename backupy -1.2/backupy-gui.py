@@ -18,7 +18,7 @@
 # ~Meta~
 # Meta-data variables.
 __AUTHOR__ = "Jimmie Odelius"
-__VERSION__ = "1.2.0c"
+__VERSION__ = "1.2.0d"
 
 # ~Modules~
 # Imports the modules the script will use.
@@ -55,12 +55,11 @@ class main:
         self.dst_dir = Entry(self.menu)
         self.dst_dir.grid(row = 2, column = 2)
 
-# THIS FUNCTION IS TEMPORARILY REMOVED SEE REASON BELOW
-#        # Check-button asking if you want to archive the backup.
-#        self.archive_ans = StringVar()
-#        self.archive_ck = Checkbutton(self.menu, text = "Archive.",\
-#        onvalue = True, ofvalue = None, variable = self.archive_ans)
-#        self.archive_ck.grid(row = 3, column = 1)
+        # Check-button asking if you want to archive the backup.
+        self.archive_ans = BooleanVar()
+        self.archive_btn = Checkbutton(self.menu, text = "Archive.", \
+        variable = self.archive_ans, onvalue = True, offvalue = None)
+        self.archive_btn.grid(row = 3, column = 1)
 
         # Creates an ok-button
         self.ok_button = Button(self.menu, command = self.backupclick)
@@ -103,8 +102,8 @@ class main:
             # files.
             if os.path.exists(self.dst_dir.get()):
                 # Creates a folder named backup-<YYYYMMDD>-<hhmm>
-                self.new_baup_time = datetime.datetime.now().strftime("%Y%m%d-\
-                %H%M")
+                self.new_baup_time = \
+                datetime.datetime.now().strftime("%Y%m%d-%H%M")
                 self.folder_name = "backup-" + self.new_baup_time
                 if os.name == "posix":
                     self.folder_path = self.dst_dir.get() + "/" + \
@@ -120,33 +119,48 @@ class main:
                 except OSError as self.e:
                     self.error_window()
                     pass
+            
+            if self.archive_ans.get() == True:
+                self.archive_ck()
 
-# THIS ARCHIVE FUNCTION DOES NOT RAISE AN EXCEPTION IT DOES HOWEVER NOT WORK
-# FOR SOME REASON.
-# LOOK INTO THIS.
-                # If the backup is supposed to be archived, this will perform
-                # the archivation process.
-#                if self.archive_ans.get() == True:
-#                    # Creates the file folder_path.tar.gz
-#                    print(self.archive_ck)
-#                    try:
-#                        self.arc_file = tarfile.open(self.folder_path + \
-#                        "tar.gz", "w:gz")
-#                        self.arc_file.add(self.folder_path)
-#                        self.arc_file.close()
-#                    except tarfile.CompressionError as e:
-#                        print("Add error pop-up")
-#                        pass
-#                    except tarfile.TarError as e:
-#                        print("Add error pop-up")
-#                        pass
-#                    try:
-#                        if os.path.isdir(self.folder_path):
-#                            shutil.rmtree(self.folder_path)
-#                    except shutil.Error as e:
-#                            print("Error pop-up here!")
-#                            pass
-#                print("SUCCESS/FAILURE message here")
+            # Creates a pop-up saying if the job is completed.
+            # Add functionality to say if the job was completed succesfully or
+            # if it failed later.
+            self.done_pop = Toplevel()
+            self.done_pop.title("Job complete!")
+            self.done_txt = """
+            The job has been completed!
+            Thanks for using backupy.
+            """
+            self.done_msg = Message(self.done_pop, text = self.done_txt)
+            self.done_msg.grid(row = 1, column = 1)
+
+            # Escape button
+            self.done_exit = Button(self.done_pop, \
+            command = self.main_parent.destroy)
+            self.done_exit.configure(text = "Exit", background = "grey")
+            self.done_exit.grid(row = 2, column = 1)
+
+    # If the backup is supposed to be archived, this will perform the
+    # archivation process.
+    def archive_ck(self): 
+        # Attempt to create the tarfile folder_path + tar.gz
+        try:
+            self.arc_file = tarfile.open(self.folder_path + ".tar.gz", \
+            "w:gz")
+            self.arc_file.add(self.folder_path)
+            self.arc_file.close()
+        except tarfile.CompressionError as e:
+            print("Add error pop-up")
+        except tarfile.TarError as e:
+            print("error")
+        # Check if folder_path exists, if so, remove folder_path
+        try:
+            if os.path.isdir(self.folder_path):
+                shutil.rmtree(self.folder_path)
+        except shutil.Error as e:
+            print("error")
+            pass
 
     # Exit-button function
     def exitclick(self):
