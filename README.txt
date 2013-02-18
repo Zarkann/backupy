@@ -7,8 +7,8 @@ other languages as well.
 
 Feel free to use and fork it if you want.
 
-Usage
------
+Usage - CLI Mode
+----------------
 
 The script works by taking several arguments. The syntax is.
 
@@ -28,12 +28,29 @@ named backup<numbeer> under the destination root. If several backups
 are directed to the same destination root the number in backup<number>
 will increment on the new directory.
 
+Usage - GUI Mode
+----------------
+
+Pretty much self-explanatory.
+Enter the source root directory you want to copy in the source entry-field.
+Enter the destination directory in the destination entry-field.
+Decide wether you want to archive the backup.
+Press backup.
+
+Pressing help will display a help message.
+Pressing license will display licensing information.
+
 Development
 -----------
 
 At this date I am the only developer working on this project.
 If you want to push some code to the project make a new folder named
 backupy<version number> and put your files in there.
+
+Future
+------
+
+I will add encryption functionality at a later date.
 
 License
 -------

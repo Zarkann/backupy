@@ -31,9 +31,14 @@ will increment on the new directory.
 Usage - GUI Mode
 ----------------
 
-This mode is currently under construction and is being built.
-No functionality at this time.
-Functionality will be implemented in version 1.2.X
+Pretty much self-explanatory.
+Enter the source root directory you want to copy in the source entry-field.
+Enter the destination directory in the destination entry-field.
+Decide wether you want to archive the backup.
+Press backup.
+
+Pressing help will display a help message.
+Pressing license will display licensing information.
 
 Development
 -----------
@@ -41,6 +46,11 @@ Development
 At this date I am the only developer working on this project.
 If you want to push some code to the project make a new folder named
 backupy<version number> and put your files in there.
+
+Future
+------
+
+I will add encryption functionality at a later date.
 
 License
 -------

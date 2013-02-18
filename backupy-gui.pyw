@@ -123,6 +123,8 @@ class main:
             if self.archive_ans.get() == True:
                 self.archive_ck()
 
+            # FIXME : This pop-up turns up even if the script fails due to 
+            # false source and destination parameters.
             # Creates a pop-up saying if the job is completed.
             # Add functionality to say if the job was completed succesfully or
             # if it failed later.
