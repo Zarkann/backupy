@@ -1,3 +1,0 @@
-# Ignore the following files with this file-ending.
-*.py[ocd] # Compiled python code.
-*.komodoproject # Ignores the komodo project file.

@@ -16,7 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-help_text = ("    backup.py is a script to be used for backing up your chosen directories.\n"
+help_text = (
+"    backup.py is a script to be used for backing up your chosen directories.\n"
 "    You can do this with the following syntax.\n\n"
 "    backup.py -s <source directory> -d <destination directory>\n"
 "    If you also want to compress your backup folder into a\n"
@@ -32,7 +33,8 @@ not_supported = ("    Your operating system is not supported.\n"
 easter = ("    This is an easter egg.\n"
 "    It is not particularly tasty.\n")
 
-install_intro = (    "backupy will now be installed as a callable command on the command\n"
+install_intro = (
+"    backupy will now be installed as a callable command on the command\n"
 "    prompt. You may of course do so manually if you wish.\n"
 "    Make sure that you have permission to edit the files of the other\n"
 "    users of the system. (Including '/root/.bashrc')\n")
