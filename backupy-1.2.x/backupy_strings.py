@@ -16,6 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+__VERSION__ = "1.2.1"
+
+__AUTHOR__ = "Jimmie Odelius"
+
 help_text = (
 "    backup.py is a script to be used for backing up your chosen directories.\n"
 "    You can do this with the following syntax.\n\n"

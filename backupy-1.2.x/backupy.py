@@ -15,11 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# ~Meta~
-# Meta-data variables.
-__AUTHOR__ = "Jimmie Odelius"
-__VERSION__ = "1.2.0d"
-
 # ~Modules~
 # Imports the modules the script will use.
 import backupy_strings
@@ -72,8 +67,8 @@ def main(argv):
             print("\tYour directory will be archived.")
             archive = True
         elif opt in ("-v"):
-            print("\tThis is backupy version %r.") % __VERSION__
-            print("\tCreated by %r.") % __AUTHOR__
+            print("\tThis is backupy version %s.") % backupy_strings.__VERSION__
+            print("\tCreated by %s.") % backupy_strings.__AUTHOR__
 
     # Makes sure the script is not without values on src_dir and dst_dir
     if root_dir != '' or dst_dir != '':

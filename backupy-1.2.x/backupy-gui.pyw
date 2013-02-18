@@ -15,14 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# ~Meta~
-# Meta-data variables.
-__AUTHOR__ = "Jimmie Odelius"
-__VERSION__ = "1.2.0d"
-
 # ~Modules~
 # Imports the modules the script will use.
 from Tkinter import *
+import backupy_strings
 import datetime
 import errno
 import os
@@ -31,7 +27,7 @@ import tarfile
 
 # ~Code~
 root = Tk()
-root.title("backupy - Back-up utility tool.")
+root.title("backupy - a backup utility tool")
 
 class main:
     def __init__(self, parent):
@@ -119,31 +115,18 @@ class main:
                 except OSError as self.e:
                     self.error_window()
                     pass
-            
-            if self.archive_ans.get() == True:
-                self.archive_ck()
 
-            # FIXME : This pop-up turns up even if the script fails due to 
-            # false source and destination parameters.
-            # FIXME : This pop-up does not turn up after a successful 
-            # archivation.
             # Creates a pop-up saying if the job is completed.
-            # Add functionality to say if the job was completed succesfully or
-            # if it failed later.
-            self.done_pop = Toplevel()
-            self.done_pop.title("Job complete!")
-            self.done_txt = """
-            The job has been completed!
-            Thanks for using backupy.
-            """
-            self.done_msg = Message(self.done_pop, text = self.done_txt)
-            self.done_msg.grid(row = 1, column = 1)
-
-            # Escape button
-            self.done_exit = Button(self.done_pop, \
-            command = self.main_parent.destroy)
-            self.done_exit.configure(text = "Exit", background = "grey")
-            self.done_exit.grid(row = 2, column = 1)
+            # Add functionality to say if the job was completed succesfully
+            # or if it failed later.
+            if (not self.archive_ans.get() == True) and (os.path.isdir(\
+            self.folder_path) == True):
+                self.completed_job()
+            elif self.archive_ans.get() == True:
+                self.archive_ck()
+            else:
+                self.awry_job()
+                
 
     # If the backup is supposed to be archived, this will perform the
     # archivation process.
@@ -155,16 +138,20 @@ class main:
             self.arc_file.add(self.folder_path)
             self.arc_file.close()
         except tarfile.CompressionError as e:
-            print("Add error pop-up")
+            self.awry_job()
         except tarfile.TarError as e:
-            print("error")
+            self.awry_job()
         # Check if folder_path exists, if so, remove folder_path
         try:
             if os.path.isdir(self.folder_path):
                 shutil.rmtree(self.folder_path)
         except shutil.Error as e:
-            print("error")
-            pass
+            self.awry_job()
+
+        if os.path.isfile(self.folder_path + ".tar.gz") == True:
+            self.completed_job()
+        else:
+            self.awry_job()
 
     # Exit-button function
     def exitclick(self):
@@ -256,6 +243,35 @@ class main:
         self.no_root_dis = Button(self.no_root, command = self.no_root.destroy)
         self.no_root_dis.configure(text = "Dismiss", background = "grey")
         self.no_root_dis.grid(row = 2, column = 1)
+
+    def completed_job(self):
+        self.done_pop = Toplevel()
+        self.done_pop.title("Job complete!")
+        self.done_txt = """
+        The job has been completed!
+        Thanks for using backupy.
+        """
+        self.done_msg = Message(self.done_pop, text = self.done_txt)
+        self.done_msg.grid(row = 1, column = 1)
+
+        # Escape button
+        self.done_exit = Button(self.done_pop, \
+        command = self.main_parent.destroy)
+        self.done_exit.configure(text = "Exit", background = "grey")
+        self.done_exit.grid(row = 2, column = 1)
+
+    def awry_job(self):
+        self.awry_pop = Toplevel()
+        self.awry_pop.title("Something went awry")
+        self.awry_txt = """
+        Something went awry. Try again.
+        """
+        self.awry_msg = Message(self.awry_pop, text = self.awry_txt)
+        self.awry_msg.grid(row = 1, column = 1)
+        self.awry_exit = Button(self.awry_pop,\
+        command = self.main_parent.destroy)
+        self.awry_exit.configure(text = "Exit", background = "grey")
+        self.awry_exit.grid(row = 2, column = 1)
 
 root_instance = main(root)
 root.mainloop()
