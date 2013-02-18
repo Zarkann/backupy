@@ -125,6 +125,8 @@ class main:
 
             # FIXME : This pop-up turns up even if the script fails due to 
             # false source and destination parameters.
+            # FIXME : This pop-up does not turn up after a successful 
+            # archivation.
             # Creates a pop-up saying if the job is completed.
             # Add functionality to say if the job was completed succesfully or
             # if it failed later.
